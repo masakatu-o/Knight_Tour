@@ -37,5 +37,51 @@
 - **ナイト巡回問題**: チェスのナイトの動きで盤面を一筆書き
 - **並列処理**: 複数のスレッドやゴルーチンで高速化
 
+
+**ここまでcopilotによる解説**
+
 ---
-copilotによる解説
+
+###**ソースコード説明**
+
+**hamiltonpath.go**
+
+- スレッド毎のグローバル変数を準備し、指定されたスレッドと指定されたstepを立ち上げる。
+- mainでパラメーターを指定して呼び出す。
+
+**step.go**
+
+- backtrack関数。３種類（normal,euler,magic）用意されている。
+  
+**gather.go**
+
+- edgeの苅込みとDeadEndの検出を行う。
+
+**euler.go**
+
+- 島と橋に分解してオイラー判定を行う
+  
+**magic.go**
+
+- Magic Tourの試験的コード
+
+**node.go**
+
+- nodeの構造体の定義とメソッド
+
+**stop.go**
+
+- 完了、リミットオーバー、異常時の、スレッドの終了
+
+**kngraph.go**
+
+- Knight Tour用のグラフの作成
+
+**xyplot.go**
+
+- 結果およびdebug用画像の作成
+
+**sequence.go**
+
+- 結果sequenceの作成
+
