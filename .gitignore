@@ -1,0 +1,10 @@
+go.work
+*.sum
+*.json
+*.csv
+*.exe
+*.mod
+*.png
+*.goo
+main.go
+*.txt
