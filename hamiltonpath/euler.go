@@ -573,6 +573,38 @@ func scan(now *node, next *node, ps pset, reapList twins, hg *hGlobal) (
 		//　島が分割された。
 		default:
 
+			selfNCnt := 0
+
+			for _, seg := range segment {
+
+				for _, tw := range seg.brdList {
+					if tw[1].sect >= seCt(ps.stp) {
+						continue
+					}
+
+					selfNCnt++
+				}
+			}
+
+			if selfCnt-selfNCnt > 1 {
+				//橋の数に1以上の変化があった。
+
+				if selfNCnt == 0 {
+					//　ゼロ島が残った
+					//　内部状態がゼロ
+					mode = conTinue
+					er = 11
+					return
+				}
+
+				if !knotcheck() {
+					// 外部の島にゼロが生じた
+					mode = conTinue
+					er = 12
+					return
+				}
+			}
+
 			oddzerocnt(segment)
 
 			if zerocnt > 0 {
@@ -581,9 +613,9 @@ func scan(now *node, next *node, ps pset, reapList twins, hg *hGlobal) (
 				//drawD(2, "test", now, next, reapList, hg)
 				//stopunresolve("zero island", hg)
 
-				if zerocnt > 1 {
-					drawD(2, "test", now, next, reapList, hg)
-					stopunresolve("zerocnt > 1", hg)
+				if zerocnt > 2 {
+					//drawD(2, "test", now, next, reapList, hg)
+					stopunresolve("zerocnt > 2", hg)
 				}
 
 				var (
@@ -615,47 +647,19 @@ func scan(now *node, next *node, ps pset, reapList twins, hg *hGlobal) (
 					}
 				}
 
-				//drawD(2, "test", now, next, reapList, hg)
+				if max2 == 0 {
+					mode = conTinue
+					er = 21
+					return
+					//drawD(2, "test", now, next, reapList, hg)
+					//stopunresolve("max2 ==0", hg)
+				}
+
 				hg.phase = 2
 				hg.retP = max2
 				mode = baCk
 				return
 
-				//mode = conTinue
-				//er = 21
-				//return
-			}
-
-			selfNCnt := 0
-
-			for _, seg := range segment {
-
-				for _, tw := range seg.brdList {
-					if tw[1].sect >= seCt(ps.stp) {
-						continue
-					}
-
-					selfNCnt++
-				}
-			}
-
-			if selfCnt-selfNCnt > 1 {
-				//橋の数に1以上の変化があった。
-
-				if selfNCnt == 0 {
-					//　ゼロ島が残った
-					//　内部状態がゼロ
-					mode = conTinue
-					er = 11
-					return
-				}
-
-				if !knotcheck() {
-					// 外部の島にゼロが生じた
-					mode = conTinue
-					er = 12
-					return
-				}
 			}
 
 			// 親島の奇偶
